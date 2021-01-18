@@ -1,0 +1,1 @@
+![a digram to show the process between the browser and server when submitting a new note in SPA](../images/ex06.png)

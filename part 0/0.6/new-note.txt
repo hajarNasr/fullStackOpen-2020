@@ -1,0 +1,26 @@
+title  New Note - Exercise 0.6
+
+note over browser:
+   1- browser prevents the page from reloding after sbmitting the form.
+end note
+note over browser:
+   2- browser creates a new note object using the data
+      extracted from the form input.
+end note
+note over browser:
+  3- browser pushes the new note to the notes array 
+     that was fetched from the server on the first load of the notes page.
+end note
+note over browser:
+   4- browser repaints the notes array, which has the most recently added note now,
+      using the DOM-API. 
+end note
+browser->server: HTTP POST to new_note_spa with the new note in a JSON format.
+note over server:
+   server looks to Content-Type header of the request 
+   and recognizes the data as JSON.
+end note
+server-->browser: 201 created.
+note over server:
+  server informs broswer that the note was created and asks for nothing more.
+end note
