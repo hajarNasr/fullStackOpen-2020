@@ -1,54 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
 const App = () => {
-  const course = {
-    name: "Half Stack application development",
-    parts: [
-      {
-        name: "Fundamentals of React",
-        exercises: 10,
-      },
-      {
-        name: "Using props to pass data",
-        exercises: 7,
-      },
-      {
-        name: "State of a component",
-        exercises: 14,
-      },
-    ],
-  };
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
-  const Header = ({ course }) => <h1>{course}</h1>;
-
-  const Part = ({ part }) => (
-    <p>
-      {part.name} {part.exercises}
-    </p>
+  const Button = ({ handleClick, text }) => (
+    <button
+      onClick={handleClick}
+      style={{
+        marginLeft: "5px",
+        backgroundColor: "teal",
+        color: "white",
+        border: "none",
+        boxShadow: "1px 1px 1px rgba(0,0,0,0.3)",
+        borderRadius: "3px",
+      }}
+    >
+      {text}
+    </button>
   );
+  const giveGood = () => setGood(good + 1);
+  const giveNeutral = () => setNeutral(neutral + 1);
+  const giveBad = () => setBad(bad + 1);
 
-  const Content = ({ parts }) => (
-    <>
-      {parts.map((part) => (
-        <Part part={part} key={part.name} />
-      ))}
-    </>
-  );
-
-  const Total = ({ parts }) => (
-    <p>
-      Number of exercises
-      {Object.values(parts)
-        .map((part) => part.exercises)
-        .reduce((a, b) => a + b)}
-    </p>
-  );
   return (
     <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
+      <h1>Give Feedback</h1>
+      <Button handleClick={giveGood} text="good" />
+      <Button handleClick={giveNeutral} text="neutral" />
+      <Button handleClick={giveBad} text="bad" />
+      <hr />
+      <h2>Statistics</h2>
+
+      <p>Good {good}</p>
+      <p>Neutral {neutral}</p>
+      <p>Bad {bad}</p>
     </div>
   );
 };
