@@ -16,15 +16,20 @@ const Button = ({ handleClick, text }) => (
     {text}
   </button>
 );
+const Statistic = ({ text, value }) => (
+  <p>
+    {text} {value}
+  </p>
+);
 const Statistics = (props) => {
   const { good, neutral, bad, getTotal, getAverage, getPositive } = props;
   return (
     <>
       <h2>Statistics</h2>
+      <Statistic text="Good" value={good} />
+      <Statistic text="Neutral" value={neutral} />
+      <Statistic text="Bad" value={bad} />
 
-      <p>Good {good}</p>
-      <p>Neutral {neutral}</p>
-      <p>Bad {bad}</p>
       <p>All {getTotal()}</p>
       <p>Average {getAverage()}</p>
       <p>Positive {getPositive()}</p>
@@ -56,14 +61,18 @@ const App = () => {
       <Button handleClick={giveNeutral} text="neutral" />
       <Button handleClick={giveBad} text="bad" />
       <hr />
-      <Statistics
-        good={good}
-        bad={bad}
-        neutral={neutral}
-        getTotal={getTotal}
-        getPositive={getPositive}
-        getAverage={getAverage}
-      />
+      {good || bad || neutral ? (
+        <Statistics
+          good={good}
+          bad={bad}
+          neutral={neutral}
+          getTotal={getTotal}
+          getPositive={getPositive}
+          getAverage={getAverage}
+        />
+      ) : (
+        <p>No Feedback Given</p>
+      )}
     </div>
   );
 };
