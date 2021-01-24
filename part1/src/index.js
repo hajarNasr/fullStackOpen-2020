@@ -25,7 +25,15 @@ const App = () => {
   const giveGood = () => setGood(good + 1);
   const giveNeutral = () => setNeutral(neutral + 1);
   const giveBad = () => setBad(bad + 1);
-
+  const getTotal = () => good + neutral + bad;
+  const getAverage = () => {
+    const avg = (good - bad) / getTotal();
+    return isNaN(avg) ? 0 : avg;
+  };
+  const getPositive = () => {
+    const positive = (good / getTotal()) * 100;
+    return isNaN(positive) ? "0 %" : `${positive} %`;
+  };
   return (
     <div>
       <h1>Give Feedback</h1>
@@ -38,6 +46,9 @@ const App = () => {
       <p>Good {good}</p>
       <p>Neutral {neutral}</p>
       <p>Bad {bad}</p>
+      <p>All {getTotal()}</p>
+      <p>Average {getAverage()}</p>
+      <p>Positive {getPositive()}</p>
     </div>
   );
 };
