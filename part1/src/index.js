@@ -17,22 +17,26 @@ const Button = ({ handleClick, text }) => (
   </button>
 );
 const Statistic = ({ text, value }) => (
-  <p>
-    {text} {value}
-  </p>
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
 );
 const Statistics = (props) => {
   const { good, neutral, bad, getTotal, getAverage, getPositive } = props;
   return (
     <>
       <h2>Statistics</h2>
-      <Statistic text="Good" value={good} />
-      <Statistic text="Neutral" value={neutral} />
-      <Statistic text="Bad" value={bad} />
-
-      <p>All {getTotal()}</p>
-      <p>Average {getAverage()}</p>
-      <p>Positive {getPositive()}</p>
+      <table>
+        <tbody>
+          <Statistic text="Good" value={good} />
+          <Statistic text="Neutral" value={neutral} />
+          <Statistic text="Bad" value={bad} />
+          <Statistic text="All" value={getTotal()} />
+          <Statistic text="Average" value={getAverage()} />
+          <Statistic text="Positive" value={getPositive()} />
+        </tbody>
+      </table>
     </>
   );
 };
@@ -46,14 +50,9 @@ const App = () => {
   const giveNeutral = () => setNeutral(neutral + 1);
   const giveBad = () => setBad(bad + 1);
   const getTotal = () => good + neutral + bad;
-  const getAverage = () => {
-    const avg = (good - bad) / getTotal();
-    return isNaN(avg) ? 0 : avg;
-  };
-  const getPositive = () => {
-    const positive = (good / getTotal()) * 100;
-    return isNaN(positive) ? "0 %" : `${positive} %`;
-  };
+  const getAverage = () => ((good - bad) / getTotal()).toFixed(1);
+  const getPositive = () => `${((good / getTotal()) * 100).toFixed(1)} %`;
+
   return (
     <div>
       <h1>Give Feedback</h1>
