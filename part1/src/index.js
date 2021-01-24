@@ -14,12 +14,22 @@ const App = (props) => {
   };
   const addVote = () => setVotes({ ...votes, [selected]: votes[selected] + 1 });
 
+  const maxValue = Math.max(...Object.values(votes));
+  const maxVoteKey = Object.keys(votes).filter((x) => votes[x] === maxValue)[0];
+
   return (
     <div>
       <p>{props.anecdotes[selected]}</p>
       <p>has votes: {votes[selected]}</p>
       <Button handleClick={addVote} text="Vote" />
       <Button handleClick={getNextAnecdote} text="Next Anecdote" />
+      <h2>Anecdote with most votes</h2>
+      {maxValue !== 0 && (
+        <>
+          <p>{anecdotes[maxVoteKey]}</p>
+          <h5>has votes {maxValue}</h5>
+        </>
+      )}
     </div>
   );
 };
