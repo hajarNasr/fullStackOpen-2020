@@ -6,10 +6,18 @@ const App = () => {
 
   const changeName = (e) => setNewName(e.target.value);
 
+  const isAdded = (name) =>
+    persons.find((person) => person.name.toLowerCase() === name.toLowerCase());
+
   const addName = (e) => {
     e.preventDefault();
-    setPersons([...persons, { name: newName }]);
-    setNewName("");
+
+    if (isAdded(newName)) {
+      alert(`${newName} is already added to phonebook`);
+    } else {
+      setPersons([...persons, { name: newName }]);
+      setNewName("");
+    }
   };
   return (
     <div>
