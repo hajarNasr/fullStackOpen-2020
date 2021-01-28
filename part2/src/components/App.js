@@ -1,22 +1,26 @@
 import React, { useState } from "react";
+import Filter from "./Filter";
+import PersonForm from "./PersonForm";
+import Persons from "./Persons";
+import { people, isAdded, filterPersons } from "./helpers";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", phone: 123456 },
-  ]);
+  const [persons, setPersons] = useState(people);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const changeName = (e) => setNewName(e.target.value);
   const changePhone = (e) => setNewPhone(e.target.value);
-
-  const isAdded = (name) =>
-    persons.find((person) => person.name.toLowerCase() === name.toLowerCase());
+  const changeSearchTerm = (e) => {
+    setSearchTerm(e.target.value);
+    setPersons(filterPersons(persons, e.target.value));
+  };
 
   const addName = (e) => {
     e.preventDefault();
 
-    if (isAdded(newName)) {
+    if (isAdded(persons, newName)) {
       alert(`${newName} is already added to phonebook`);
     } else {
       setPersons([...persons, { name: newName, phone: newPhone }]);
@@ -24,28 +28,23 @@ const App = () => {
       setNewPhone("");
     }
   };
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={changeName} />
-        </div>
-        <div>
-          phone: <input value={newPhone} onChange={changePhone} />
-        </div>
-        <div>
-          <button>add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-        {persons.map((person) => (
-          <li key={person.name}>
-            {person.name} {person.phone}
-          </li>
-        ))}
-      </ul>
+      <Filter searchTerm={searchTerm} onChangeSearchTerm={changeSearchTerm} />
+
+      <h3>Add New Person</h3>
+      <PersonForm
+        name={newName}
+        phone={newPhone}
+        onChangeName={changeName}
+        onChangePhone={changePhone}
+        onSubmit={addName}
+      />
+
+      <h3>Numbers</h3>
+      <Persons persons={persons} />
     </div>
   );
 };
