@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Country from "./Country";
 
 const Countries = ({ countries }) => {
+  const [countryToShow, setCountryToShow] = useState("");
+
+  const changeCountryView = (name) => {
+    setCountryToShow(name);
+  };
   return (
     <div>
       {countries.length === 1 ? (
@@ -9,7 +14,14 @@ const Countries = ({ countries }) => {
       ) : (
         <ul>
           {countries.map((country) => (
-            <li key={country.name}>{country.name}</li>
+            <li key={country.name}>
+              {country.name}
+
+              <button onClick={(e) => changeCountryView(country.name)}>
+                show
+              </button>
+              {countryToShow === country.name && <Country country={country} />}
+            </li>
           ))}
         </ul>
       )}
