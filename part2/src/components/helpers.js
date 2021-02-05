@@ -9,7 +9,5 @@ export const lowerCase = (input) => input.toLowerCase();
 export const isAdded = (persons, newName) =>
   persons.find((person) => lowerCase(person.name) === lowerCase(newName));
 
-export const filterPersons = (persons, searchTerm) =>
-  persons.filter((person) =>
-    lowerCase(person.name).includes(lowerCase(searchTerm))
-  );
+export const filterObjects = (objects, searchTerm) =>
+  objects.filter((obj) => lowerCase(obj.name).includes(lowerCase(searchTerm)));

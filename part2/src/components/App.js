@@ -1,62 +1,48 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Filter from "./Filter";
-import PersonForm from "./PersonForm";
-import Persons from "./Persons";
-import { isAdded, filterPersons } from "./helpers";
+import Countries from "./Countries";
+import { filterObjects } from "./helpers";
 
 const App = () => {
-  const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newPhone, setNewPhone] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [countries, setCountries] = useState([]);
+  //const [moreThan10Error, setMoreThan10Error] = useState(null);
   useEffect(() => {
     axios
-      .get("http://localhost:3001/persons")
+      .get("https://restcountries.eu/rest/v2/all")
       .then((response) => {
-        setPersons(response.data);
+        let data = filterObjects(response.data, searchTerm);
+        setCountries(data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [searchTerm]);
 
-  const changeName = (e) => setNewName(e.target.value);
-  const changePhone = (e) => setNewPhone(e.target.value);
-  const changeSearchTerm = (e) => {
-    setSearchTerm(e.target.value);
-    setPersons(filterPersons(persons, e.target.value));
-  };
-
-  const addName = (e) => {
-    e.preventDefault();
-
-    if (isAdded(persons, newName)) {
-      alert(`${newName} is already added to phonebook`);
-    } else {
-      setPersons([...persons, { name: newName, phone: newPhone }]);
-      setNewName("");
-      setNewPhone("");
-    }
-  };
+  const changeSearchTerm = (event) => setSearchTerm(event.target.value);
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <Filter searchTerm={searchTerm} onChangeSearchTerm={changeSearchTerm} />
-
-      <h3>Add New Person</h3>
-      <PersonForm
-        name={newName}
-        phone={newPhone}
-        onChangeName={changeName}
-        onChangePhone={changePhone}
-        onSubmit={addName}
-      />
-
-      <h3>Numbers</h3>
-      <Persons persons={persons} />
+      <h2>Countries</h2>
+      <div>
+        <span>Find countries: </span>
+        <input
+          value={searchTerm}
+          onChange={changeSearchTerm}
+          placeholder="Enter country"
+        />
+      </div>
+      {searchTerm ? (
+        countries.length === 0 ? (
+          <p>No countries matched your search.</p>
+        ) : countries.length > 10 ? (
+          <p>Too many matches, specify another filter</p>
+        ) : (
+          <Countries countries={countries} />
+        )
+      ) : (
+        ""
+      )}
     </div>
   );
 };

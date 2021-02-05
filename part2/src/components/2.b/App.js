@@ -3,7 +3,7 @@ import axios from "axios";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
-import { isAdded, filterPersons } from "./helpers";
+import { isAdded, filterObjects } from "../helpers";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -26,7 +26,7 @@ const App = () => {
   const changePhone = (e) => setNewPhone(e.target.value);
   const changeSearchTerm = (e) => {
     setSearchTerm(e.target.value);
-    setPersons(filterPersons(persons, e.target.value));
+    setPersons(filterObjects(persons, e.target.value));
   };
 
   const addName = (e) => {
