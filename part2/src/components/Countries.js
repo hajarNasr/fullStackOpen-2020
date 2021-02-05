@@ -10,7 +10,7 @@ const Countries = ({ countries }) => {
   return (
     <div>
       {countries.length === 1 ? (
-        <Country country={countries[0]} />
+        <Country country={countries[0]} isShowWeather={true} />
       ) : (
         <ul>
           {countries.map((country) => (
