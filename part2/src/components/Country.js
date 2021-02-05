@@ -4,14 +4,16 @@ import axios from "axios";
 const Country = ({ country, isShowWeather }) => {
   const [temp, setTemp] = useState("");
   const [wind, setWind] = useState("");
+  const api_key = process.env.REACT_APP_API_KEY;
 
   useEffect(() => {
     axios
       .get(
-        `http://api.weatherstack.com/current?access_key=d56cf290af651470a2845f17d92e357c&query=${country.name}`
+        `http://api.weatherstack.com/current?access_key=${api_key}&query=${country.name}`
       )
       .then((response) => {
         let current = response.data.current;
+        setTemp(current.temperature);
         setWind(`${current.wind_speed} mph direction ${current.wind_dir}`);
       })
       .catch((err) => {
