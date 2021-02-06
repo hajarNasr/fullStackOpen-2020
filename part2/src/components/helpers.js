@@ -1,6 +1,6 @@
 export const lowerCase = (input) => input.toLowerCase();
 
-export const isAdded = (persons, newName) =>
+export const getPerson = (persons, newName) =>
   persons.find((person) => lowerCase(person.name) === lowerCase(newName));
 
 export const filterObjects = (objects, searchTerm) =>

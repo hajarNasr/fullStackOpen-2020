@@ -12,9 +12,13 @@ const addPerson = (newPerson) => {
   return request.then((response) => response.data);
 };
 
+const updatePhoneNumber = (id, updatedPerson) => {
+  const request = axios.put(`${apiURL}/${id}`, updatedPerson);
+  return request.then((response) => response.data);
+};
 const deletePerson = (id) => {
   const request = axios.delete(`${apiURL}/${id}`);
   return request.then((response) => response.data);
 };
 
-export { getAllPersons, addPerson, deletePerson };
+export { getAllPersons, addPerson, deletePerson, updatePhoneNumber };

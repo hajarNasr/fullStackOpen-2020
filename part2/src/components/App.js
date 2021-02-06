@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { getAllPersons, addPerson, deletePerson } from "./personsServices";
+import {
+  getAllPersons,
+  addPerson,
+  deletePerson,
+  updatePhoneNumber,
+} from "./personsServices";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
-import { isAdded, filterObjects } from "./helpers";
+import { getPerson, filterObjects } from "./helpers";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -28,8 +33,23 @@ const App = () => {
   const addName = (e) => {
     e.preventDefault();
 
-    if (isAdded(persons, newName)) {
-      alert(`${newName} is already added to phonebook`);
+    if (getPerson(persons, newName)) {
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook. Want to update their phone's number?`
+        )
+      ) {
+        const thePerson = getPerson(persons, newName);
+        const updatedPerson = { ...thePerson, number: newPhone };
+
+        updatePhoneNumber(thePerson.id, updatedPerson).then((returnedPerson) =>
+          setPersons(
+            persons.map((person) =>
+              person.id !== returnedPerson.id ? person : returnedPerson
+            )
+          )
+        );
+      }
     } else {
       addPerson({ name: newName, number: newPhone }).then((newPerson) => {
         setPersons(persons.concat(newPerson));
@@ -39,7 +59,7 @@ const App = () => {
     }
   };
   const delPerson = (id) => {
-    if (window.confirm) {
+    if (window.confirm("You sure you want to delete this person?")) {
       deletePerson(id).then((response) => {
         setPersons(persons.filter((person) => person.id !== id));
         alert(`Person with id: ${id} was successfuly deleted.`);
