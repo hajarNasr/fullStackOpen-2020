@@ -8,13 +8,17 @@ import {
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
+import Notification from "./Notification";
 import { getPerson, filterObjects } from "./helpers";
 
 const App = () => {
+  let initalMessage = { type: "", content: "" };
+
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [message, setMessage] = useState(initalMessage);
 
   useEffect(() => {
     getAllPersons()
@@ -24,7 +28,13 @@ const App = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [searchTerm]);
+
+    if (message.type) {
+      setTimeout(() => {
+        setMessage(initalMessage);
+      }, 2000);
+    }
+  }, [searchTerm, message]);
 
   const changeName = (e) => setNewName(e.target.value);
   const changePhone = (e) => setNewPhone(e.target.value);
@@ -42,12 +52,18 @@ const App = () => {
         const thePerson = getPerson(persons, newName);
         const updatedPerson = { ...thePerson, number: newPhone };
 
-        updatePhoneNumber(thePerson.id, updatedPerson).then((returnedPerson) =>
-          setPersons(
-            persons.map((person) =>
-              person.id !== returnedPerson.id ? person : returnedPerson
-            )
-          )
+        updatePhoneNumber(thePerson.id, updatedPerson).then(
+          (returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== returnedPerson.id ? person : returnedPerson
+              )
+            );
+            setMessage({
+              type: "success",
+              content: `${newName}'s phone number was add successfully updated.`,
+            });
+          }
         );
       }
     } else {
@@ -55,15 +71,30 @@ const App = () => {
         setPersons(persons.concat(newPerson));
         setNewName("");
         setNewPhone("");
+        setMessage({
+          type: "success",
+          content: `${newName} was add successfully your notebook.`,
+        });
       });
     }
   };
   const delPerson = (id) => {
     if (window.confirm("You sure you want to delete this person?")) {
-      deletePerson(id).then((response) => {
-        setPersons(persons.filter((person) => person.id !== id));
-        alert(`Person with id: ${id} was successfuly deleted.`);
-      });
+      deletePerson(id)
+        .then((response) => {
+          setPersons(persons.filter((person) => person.id !== id));
+          setMessage({
+            type: "success",
+            content: `Successfully deleted.`,
+          });
+        })
+        .catch((err) => {
+          setMessage({
+            type: "error",
+            content:
+              "The person you're trying to delete has already been removed from the server.",
+          });
+        });
     }
   };
   return (
@@ -82,6 +113,8 @@ const App = () => {
 
       <h3>Numbers</h3>
       <Persons persons={persons} onDeletePerson={delPerson} />
+
+      {message.type && <Notification msg={message} />}
     </div>
   );
 };
