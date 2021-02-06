@@ -12,4 +12,9 @@ const addPerson = (newPerson) => {
   return request.then((response) => response.data);
 };
 
-export { getAllPersons, addPerson };
+const deletePerson = (id) => {
+  const request = axios.delete(`${apiURL}/${id}`);
+  return request.then((response) => response.data);
+};
+
+export { getAllPersons, addPerson, deletePerson };

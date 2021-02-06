@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getAllPersons, addPerson } from "./personsServices";
+import { getAllPersons, addPerson, deletePerson } from "./personsServices";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
@@ -38,7 +38,14 @@ const App = () => {
       });
     }
   };
-
+  const delPerson = (id) => {
+    if (window.confirm) {
+      deletePerson(id).then((response) => {
+        setPersons(persons.filter((person) => person.id !== id));
+        alert(`Person with id: ${id} was successfuly deleted.`);
+      });
+    }
+  };
   return (
     <div>
       <h2>Phonebook</h2>
@@ -54,7 +61,7 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons persons={persons} />
+      <Persons persons={persons} onDeletePerson={delPerson} />
     </div>
   );
 };
