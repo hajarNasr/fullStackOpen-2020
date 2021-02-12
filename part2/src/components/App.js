@@ -21,13 +21,9 @@ const App = () => {
   const [message, setMessage] = useState(initalMessage);
 
   useEffect(() => {
-    getAllPersons()
-      .then((persons) => {
-        setPersons(filterObjects(persons, searchTerm));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getAllPersons().then((persons) => {
+      setPersons(filterObjects(persons, searchTerm));
+    });
 
     if (message.type) {
       setTimeout(() => {
