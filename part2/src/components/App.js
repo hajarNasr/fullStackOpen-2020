@@ -48,8 +48,8 @@ const App = () => {
         const thePerson = getPerson(persons, newName);
         const updatedPerson = { ...thePerson, number: newPhone };
 
-        updatePhoneNumber(thePerson.id, updatedPerson).then(
-          (returnedPerson) => {
+        updatePhoneNumber(thePerson.id, updatedPerson)
+          .then((returnedPerson) => {
             setPersons(
               persons.map((person) =>
                 person.id !== returnedPerson.id ? person : returnedPerson
@@ -59,19 +59,31 @@ const App = () => {
               type: "success",
               content: `${newName}'s phone number was add successfully updated.`,
             });
-          }
-        );
+          })
+          .catch((err) => {
+            setMessage({
+              type: "error",
+              content: err.response.data.error,
+            });
+          });
       }
     } else {
-      addPerson({ name: newName, number: newPhone }).then((newPerson) => {
-        setPersons(persons.concat(newPerson));
-        setNewName("");
-        setNewPhone("");
-        setMessage({
-          type: "success",
-          content: `${newName} was add successfully your notebook.`,
+      addPerson({ name: newName, number: newPhone })
+        .then((newPerson) => {
+          setPersons(persons.concat(newPerson));
+          setNewName("");
+          setNewPhone("");
+          setMessage({
+            type: "success",
+            content: `${newName} was add successfully your notebook.`,
+          });
+        })
+        .catch((err) => {
+          setMessage({
+            type: "error",
+            content: err.response.data.error,
+          });
         });
-      });
     }
   };
   const delPerson = (id) => {
