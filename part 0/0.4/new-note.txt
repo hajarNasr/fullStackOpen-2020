@@ -1,0 +1,28 @@
+title  New Note- Exercise  0.4
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new-note
+note over server:
+  server takes the data sent in the body with the POST method, 
+  creates a new note from that data, and then 
+  adds the new note to the array of notes.
+end note
+server-->browser: 302 Redirect to https://studies.cs.helsinki.fi/exampleapp/notes
+note over browser:
+  browser sees that the server is now asking it to redirect
+  to (GET) the notes path
+end note
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/js.css
+server-->browser: main.js
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.js
+note over server
+  server sends all the notes, including the one that was just added
+end note
+server-->browser: [array of notes objects]
+
+note over browser:
+  browser renders all the notes, including the new one
+end note
