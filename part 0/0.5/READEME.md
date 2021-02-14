@@ -1,0 +1,1 @@
+![a digram to show the process between the browser and server when the user goes to the single page app version of the notes app](../images/ex05.png)
